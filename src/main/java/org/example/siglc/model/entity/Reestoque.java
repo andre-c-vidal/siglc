@@ -1,9 +1,10 @@
 package org.example.siglc.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Reestoque {
-    private int id;
+    private Integer id;
     private LocalDateTime dataHora;
 
     public Reestoque(int id, LocalDateTime dataHora) {
@@ -11,17 +12,16 @@ public class Reestoque {
         setDataHora(dataHora);
     }
 
-    public void setId(int id) {
-        if (id >= 0) this.id = id;
+    public void setId(Integer id) {
+        if (id != null && id >= 0) this.id = id;
         else throw new IllegalArgumentException("ID invalido");
     }
 
     public void setDataHora(LocalDateTime dataHora) {
-        if (dataHora != null) this.dataHora = dataHora;
-        else throw new IllegalArgumentException("dataHora invalido");
+        this.dataHora = Objects.requireNonNull(dataHora, "Datahora invalida");
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
     public LocalDateTime getDataHora() {

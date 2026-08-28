@@ -1,7 +1,6 @@
 package org.example.siglc.controller;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -9,10 +8,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-import org.example.siglc.application.Contexto;
-import org.example.siglc.application.GerenteDeCenas;
-import org.example.siglc.model.dto.FuncionarioDTO;
 import org.example.siglc.service.AutenticacaoService;
+import org.example.siglc.util.Cena;
+import org.example.siglc.util.GerenciadorDeCenas;
 
 public class LoginController {
     private final AutenticacaoService autenticacaoService;
@@ -40,13 +38,9 @@ public class LoginController {
             textoSenha.requestFocus();
             return;
         }
-        Optional<FuncionarioDTO> resultado = autenticacaoService.tentarLogin(login, senha);
-        if (resultado.isPresent()) {
-            Contexto.setFuncionarioLogado(resultado.get());
-            GerenteDeCenas.alterarCena("TelaInicial");
-        } else {
-            mostrarAlerta(AlertType.WARNING, "Login invalido", "Login ou senha incorretos");
-        }
+        boolean loginSucesso = autenticacaoService.login(login, senha);
+        if (loginSucesso) GerenciadorDeCenas.alterarCena(Cena.TELA_INICIAL);
+        else mostrarAlerta(AlertType.WARNING, "Login invalido", "Login ou senha incorretos");
     }
 
     private static void mostrarAlerta(AlertType tipo, String titulo, String mensagem) {

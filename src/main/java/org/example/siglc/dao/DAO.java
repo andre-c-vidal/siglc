@@ -3,8 +3,8 @@ package org.example.siglc.dao;
 import java.util.List;
 
 public interface DAO <T> {
-    void inserir(T entidade);
+    void salvar(T entidade);
     void atualizar(T entidade);
-    void deletar(T entidade);
+    void remover(T entidade);
     List<T> listar();
 }

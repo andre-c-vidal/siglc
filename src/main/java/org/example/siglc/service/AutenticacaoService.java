@@ -1,27 +1,31 @@
 package org.example.siglc.service;
 
+import java.util.Objects;
 import java.util.Optional;
 
+import org.example.siglc.dao.FuncionarioDAO;
 import org.example.siglc.model.entity.Funcionario;
 import org.mindrot.jbcrypt.BCrypt;
 
-import org.example.siglc.dao.FuncionarioDAO;
 import org.example.siglc.model.dto.FuncionarioDTO;
+import org.example.siglc.util.Contexto;
 
 public class AutenticacaoService {
     private final FuncionarioDAO funcionarioDAO;
 
     public AutenticacaoService(FuncionarioDAO funcionarioDAO) {
-        if (funcionarioDAO != null) this.funcionarioDAO = funcionarioDAO;
-        else throw new IllegalArgumentException("FuncionarioDAO invalido");
+        this.funcionarioDAO = Objects.requireNonNull(funcionarioDAO);
     }
 
-    public Optional<FuncionarioDTO> tentarLogin(String login, String senha) {
-        if (login == null || login.isBlank()) throw new IllegalArgumentException("Login invalido");
-        if (senha == null || senha.isBlank()) throw new IllegalArgumentException("Senha invalida");
-        return funcionarioDAO.buscarPorLogin(login)
-                .filter(Funcionario::isAtivo)
-                .filter(f -> BCrypt.checkpw(senha, f.getSenhaHash()))
-                .map(f -> new FuncionarioDTO(f.getId(), f.getNome()));
+    public boolean login(String login, String senha) {
+        if (login == null || login.isBlank()) return false;
+        if (senha == null || senha.isBlank()) return false;
+        Optional<Funcionario> funcionarioOptional = funcionarioDAO.buscarPorLogin(login);
+        if (funcionarioOptional.isEmpty()) return false;
+        Funcionario funcionario = funcionarioOptional.get();
+        if (!BCrypt.checkpw(senha, funcionario.getSenhaHash())) return false;
+        FuncionarioDTO funcionarioDTO = new FuncionarioDTO(funcionario.getNome(), funcionario.getCargo());
+        Contexto.setFuncionarioLogado(funcionarioDTO);
+        return true;
     }
 }

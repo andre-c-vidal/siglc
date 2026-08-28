@@ -1,20 +1,30 @@
 package org.example.siglc.model.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "fornecedor")
 public class Fornecedor {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false, length = 100)
     private String nome;
+
+    @Column(nullable = false, length = 20)
     private String telefone;
+
+    @Column(nullable = false, length = 100)
     private String email;
 
-    public Fornecedor(int id, String nome, String telefone, String email) {
-        setId(id);
-        setNome(nome);
-        setTelefone(telefone);
-        setEmail(email);
-    }
-
-    public void setId(int id) {
-        if (id >= 0) this.id = id;
+    public void setId(Integer id) {
+        if (id != null && id >= 0) this.id = id;
         else throw new IllegalArgumentException("ID invalido");
     }
 
@@ -30,10 +40,10 @@ public class Fornecedor {
 
     public void setEmail(String email) {
         if (email != null && !email.isBlank()) this.email = email;
-        else throw new IllegalArgumentException("Telefone invalido");
+        else throw new IllegalArgumentException("Email invalido");
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

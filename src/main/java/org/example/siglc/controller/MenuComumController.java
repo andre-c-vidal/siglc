@@ -3,8 +3,9 @@ package org.example.siglc.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-import org.example.siglc.application.Contexto;
-import org.example.siglc.application.GerenteDeCenas;
+import org.example.siglc.util.Cena;
+import org.example.siglc.util.Contexto;
+import org.example.siglc.util.GerenciadorDeCenas;
 
 public class MenuComumController {
     @FXML private Label textoNome;
@@ -13,42 +14,42 @@ public class MenuComumController {
     @FXML
     protected void initialize() {
         textoNome.setText(Contexto.getFuncionarioLogado().nome());
-        textoFuncao.setText("Funcionário");
+        textoFuncao.setText(Contexto.getFuncionarioLogado().cargo());
     }
 
     @FXML
     private void botaoInicioPressionado() {
-        GerenteDeCenas.alterarCena("TelaInicial");
+        GerenciadorDeCenas.alterarCena(Cena.TELA_INICIAL);
     }
 
     @FXML
     private void botaoProdutosPressionado() {
-        GerenteDeCenas.alterarCena("Produtos");
+
     }
 
     @FXML
     private void botaoVendasPressionado() {
-        GerenteDeCenas.alterarCena("Vendas");
+
     }
 
     @FXML
     private void botaoReestoquesPressionado() {
-        GerenteDeCenas.alterarCena("Reestoques");
+
     }
 
     @FXML
     private void botaoRelatoriosPressionado() {
-        GerenteDeCenas.alterarCena("Relatorios");
+
     }
 
     @FXML
     private void botaoFornecedoresPressionado() {
-        GerenteDeCenas.alterarCena("Fornecedores");
+
     }
 
     @FXML
     private void botaoSairPressionado() {
         Contexto.sairLogin();
-        GerenteDeCenas.alterarCena("Login");
+        GerenciadorDeCenas.alterarCena(Cena.LOGIN);
     }
 }

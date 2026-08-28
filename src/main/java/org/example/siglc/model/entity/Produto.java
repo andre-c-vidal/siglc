@@ -1,26 +1,42 @@
 package org.example.siglc.model.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "produto")
 public class Produto {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false, length = 100)
     private String nome;
+
+    @Column(nullable = false, length = 100)
     private String categoria;
+
+    @Column(nullable = false, precision = 6, scale = 2)
     private BigDecimal preco;
+
+    @Column(name = "quantidade_em_estoque")
     private int quantidadeEmEstoque;
-    private int fornecedorId;
 
-    public Produto(int id, String nome, String categoria, BigDecimal preco, int quantidadeEmEstoque, int fornecedorId) {
-        setId(id);
-        setNome(nome);
-        setCategoria(categoria);
-        setPreco(preco);
-        setQuantidadeEmEstoque(quantidadeEmEstoque);
-        setFornecedorId(fornecedorId);
-    }
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "fornecedor_id", nullable = false)
+    private Fornecedor fornecedor;
 
-    public void setId(int id) {
-        if (id >= 0) this.id = id;
+    public void setId(Integer id) {
+        if (id != null && id >= 0) this.id = id;
         else throw new IllegalArgumentException("ID invalido");
     }
 
@@ -44,12 +60,12 @@ public class Produto {
         else throw new IllegalArgumentException("QuantidadeEmEstoque invalido");
     }
 
-    public void setFornecedorId(int fornecedorId) {
-        if (fornecedorId >= 0) this.fornecedorId = fornecedorId;
+    public void setFornecedor(Fornecedor fornecedor) {
+        if (fornecedor != null) this.fornecedor = fornecedor;
         else throw new IllegalArgumentException("Fornecedor invalido");
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -69,7 +85,7 @@ public class Produto {
         return quantidadeEmEstoque;
     }
 
-    public int getFornecedorId() {
-        return fornecedorId;
+    public Fornecedor getFornecedor() {
+        return fornecedor;
     }
 }

@@ -1,24 +1,39 @@
 package org.example.siglc.model.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "funcionario")
 public class Funcionario {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false, length = 100)
     private String nome;
+
+    @Column(nullable = false, length = 14)
     private String cpf;
+
+    @Column(nullable = false, length = 30)
     private String login;
+
+    @Column(name = "senha_hash", nullable = false, length = 60)
     private String senhaHash;
-    private boolean ativo;
 
-    public Funcionario(int id, String nome, String cpf, String login, String senhaHash, boolean ativo) {
-        setId(id);
-        setNome(nome);
-        setCpf(cpf);
-        setLogin(login);
-        setSenhaHash(senhaHash);
-        setAtivo(ativo);
-    }
+    @Column(nullable = false)
+    private Boolean ativo;
 
-    public void setId(int id) {
-        if (id >= 0) this.id = id;
+    @Column(nullable = false, length = 100)
+    private String cargo;
+
+    public void setId(Integer id) {
+        if (id != null && id >= 0) this.id = id;
         else throw new IllegalArgumentException("ID invalido");
     }
 
@@ -42,11 +57,17 @@ public class Funcionario {
         else throw new IllegalArgumentException("Senha invalido");
     }
 
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
+    public void setAtivo(Boolean ativo) {
+        if (ativo != null) this.ativo = ativo;
+        else throw new IllegalArgumentException("Boolean nao pode ser nulo");
     }
 
-    public int getId() {
+    public void setCargo(String cargo) {
+        if (cargo != null && !cargo.isBlank()) this.cargo = cargo;
+        else throw new IllegalArgumentException("Cargo invalido");
+    }
+
+    public Integer getId() {
         return id;
     }
 
@@ -66,7 +87,11 @@ public class Funcionario {
         return senhaHash;
     }
 
-    public boolean isAtivo() {
+    public Boolean isAtivo() {
         return ativo;
+    }
+
+    public String getCargo() {
+        return cargo;
     }
 }
